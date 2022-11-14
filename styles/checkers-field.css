@@ -52,6 +52,6 @@
 }
 
 .move_option{
-    border: 5px double yellow;
+    border: 3px double rgb(255, 255, 153);
     box-sizing: border-box;
 }

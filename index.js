@@ -1,8 +1,6 @@
 
 const table = document.querySelector(".checkers-field"); 
-let focusEl={
-    chip: 'c0'
-}
+let focusEl={chip: 0}
 
 
 table.addEventListener("click", (e) =>{
@@ -11,14 +9,31 @@ table.addEventListener("click", (e) =>{
         focusOfChip(e.target)
     }
 
+    if(e.target.classList.contains('move_option')){
+        let cellFocusedChip = table.rows[focusEl.row].cells[focusEl.cell];
+        console.log(cellFocusedChip.children[0]);
+        
+        e.target.append(cellFocusedChip.children[0]);
+        unFocusOfChip()
+
+    }else{
+        // if(focusEl.chip!=0)
+        // unFocusOfChip(); 
+        // console.log(e.target);
+    }
+    
+   
+
 })
 
 // e.target.parentNode.rowIndex, e.target.parentNode.cellIndex
 
 function focusOfChip(chip){
-    if(!chip.classList.contains('chip_target')) {
 
-        document.querySelector("#" + focusEl.chip).classList.remove('chip_target')
+    if(!chip.classList.contains('chip_target')) {
+        if (focusEl.chip != 0){
+            unFocusOfChip();
+        }
 
         chip.classList.add('chip_target');
         focusEl.chip = chip.id;
@@ -39,6 +54,15 @@ function focusOfChip(chip){
         chip.classList.remove('chip_target')    
     } 
         
+}
+
+function unFocusOfChip(){
+    let unFocusEl = document.querySelector("#" + focusEl.chip);
+    if(unFocusEl.classList.contains("chip_color_red")){
+        removeOptionMove("red");
+    }else removeOptionMove("white");
+    
+    unFocusEl.classList.remove('chip_target');
 }
 
 function addOptionMove(color){
@@ -71,6 +95,7 @@ function removeOptionMove(color){
     }
         
 }
+
 
 
 function start(){
