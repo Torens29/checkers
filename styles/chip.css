@@ -1,0 +1,27 @@
+.chip{
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    
+border: 5px double black;
+
+    margin: auto;
+
+    box-sizing: border-box;
+}
+
+.chip_color_red{
+    background: rgb(255, 0, 0); 
+}
+
+.chip_color_white{
+    background: rgb(255, 255, 255);
+}
+
+.chip_target{
+
+    box-sizing: border-box;
+
+    border: 3px dotted rgb(175, 173, 0);
+}
+

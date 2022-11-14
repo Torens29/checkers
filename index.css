@@ -1,0 +1,18 @@
+@import url(styles/checkers-field.css);
+@import url(styles/chip.css);
+@import url(styles/nums.css);
+
+
+.wrap{
+    margin: 0% auto;
+    display: flex;
+    justify-content: center;
+
+    border-left: 5px;
+    border-color: rgb(62, 0, 0);
+}
+
+
+
+
+

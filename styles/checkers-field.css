@@ -1,0 +1,57 @@
+
+.checkers-field{
+   
+    width: 320px;
+    height: 320px;
+
+    text-align: center;
+    background-color: rgb(62, 0, 0);
+    
+}
+
+.top-words{
+    height: 5px;
+    text-align: center;
+
+    background-color:black;
+}
+
+.word{
+    /* width: 30px; */
+
+    color: rgb(254, 254, 254);
+    font-size: smaller;
+}
+
+.top_words > td {
+    width: 30px;
+}
+
+.fields{
+    height: 37px;
+}
+
+.row__first-color_black> td:nth-child(odd) {
+    background-color: black;
+    width: 30px;
+}
+
+.row__first-color_black > td:nth-child(even){
+    background-color: white;
+    width: 30px;
+}
+
+.row__first-color_white > td:nth-child(even) {
+    background-color: black;
+    width: 30px;
+}
+
+.row__first-color_white > td:nth-child(odd) {
+    background-color: white;
+    width: 30px;
+}
+
+.move_option{
+    border: 5px double yellow;
+    box-sizing: border-box;
+}

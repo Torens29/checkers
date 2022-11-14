@@ -1,0 +1,16 @@
+.nums{
+    background:rgb(62, 0, 0);
+    border-collapse: collapse;
+
+}
+
+.nums tr {
+    background: rgb(0, 0, 0);
+    color: white;
+}
+
+.void-piece{
+    height: 5px;
+    font-size: smaller;
+    color: rgb(0, 0, 0);
+}
