@@ -3,7 +3,7 @@
     width: 30px;
     border-radius: 50%;
     
-border: 5px double black;
+    border: 5px double black;
 
     margin: auto;
 
@@ -11,11 +11,11 @@ border: 5px double black;
 }
 
 .chip_color_red{
-    background: rgb(255, 0, 0); 
+    background: red; 
 }
 
 .chip_color_white{
-    background: rgb(255, 255, 255);
+    background: white;
 }
 
 .chip_target{
@@ -25,3 +25,8 @@ border: 5px double black;
     border: 3px dotted rgb(175, 173, 0);
 }
 
+.damka{
+    background-image: url(../crown.png) ;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
