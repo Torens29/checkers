@@ -1,6 +1,7 @@
 
 const table = document.querySelector(".checkers-field"); 
 let focusEl={chip: 0}
+let distantOfBitChip;
 
 
 table.addEventListener("click", (e) =>{
@@ -11,7 +12,7 @@ table.addEventListener("click", (e) =>{
 
 
     if(e.target.classList.contains('move_option')){
-        if(Math.abs(e.target.parentNode.rowIndex - focusEl.row) == 2){
+        if(Math.abs(e.target.parentNode.rowIndex - focusEl.row) >= 2){
             // взависимости менять +-1
             // можно ввести переменную
             if(e.target.parentNode.rowIndex - focusEl.row > 0){
@@ -26,23 +27,19 @@ table.addEventListener("click", (e) =>{
                     }else table.rows[focusEl.row - 1].cells[focusEl.cell - 1].innerHTML = '' ;
                     
                 }
-
-
-            
-           
         }
 
         //дамка
-        if(e.target.parentNode.rowIndex == 1 || e.target.parentNode.rowIndex == 8){
-            if(table.rows[focusEl.row].cells[focusEl.cell].children[0].classList.contains("chip_color_red") 
-                && e.target.parentNode.rowIndex == 8){
-                    table.rows[focusEl.row].cells[focusEl.cell].children[0].classList.add('damka');
-                }
-            else if(table.rows[focusEl.row].cells[focusEl.cell].children[0].classList.contains("chip_color_white") 
-                && e.target.parentNode.rowIndex == 1){
-                    table.rows[focusEl.row].cells[focusEl.cell].children[0].classList.add('damka');
-                }
-        }
+        
+        if(table.rows[focusEl.row].cells[focusEl.cell].children[0].classList.contains("chip_color_red") 
+            && e.target.parentNode.rowIndex == 8){
+                table.rows[focusEl.row].cells[focusEl.cell].children[0].classList.add('damka');
+            }
+        else if(table.rows[focusEl.row].cells[focusEl.cell].children[0].classList.contains("chip_color_white") 
+            && e.target.parentNode.rowIndex == 1){
+                table.rows[focusEl.row].cells[focusEl.cell].children[0].classList.add('damka');
+            }
+        
 
 
         e.target.append(table.rows[focusEl.row].cells[focusEl.cell].children[0]);
@@ -91,55 +88,127 @@ function unFocusOfChip(){
     unFocusEl.classList.remove('chip_target');
 }
 
-function addClassOfOptionMove(deltRow, deltCell, damkaStep){
-    if(table.rows[focusEl.row + deltRow +damkaStep].cells[focusEl.cell+deltCell +damkaStep].children[0] !== undefined){// проверка на пустую ячейку
-        if(!table.rows[focusEl.row+deltRow +damkaStep].cells[focusEl.cell+deltCell +damkaStep].children[0].classList.contains(`chip_color_${focusEl.color}`)){ 
-            //проверка шашки на битость
-            if(table.rows[focusEl.row +(deltRow*2 +damkaStep)].cells[focusEl.cell+ (deltCell*2)] !== undefined && 
-                !table.rows[focusEl.row +(deltRow*2 +damkaStep)].classList.contains("word")){
-            //проверка на границу поля и на пустату x2 клетки 
-                table.rows[focusEl.row +(deltRow*2 +damkaStep)].cells[focusEl.cell +(deltCell*2 +damkaStep)].classList.add("move_option");
-            }
-        }   
-    }else table.rows[focusEl.row+deltRow].cells[focusEl.cell+deltCell].classList.add("move_option");
+function addClassOfOptionMove(deltRow, deltCell){
+    if (!table.rows[focusEl.row+deltRow].classList.contains("word"))
+        if(table.rows[focusEl.row +deltRow ].cells[focusEl.cell +deltCell ].children[0] !== undefined){// проверка на пустую ячейку
+            if(!table.rows[focusEl.row +deltRow ].cells[focusEl.cell +deltCell ].children[0].classList.contains(`chip_color_${focusEl.color}`)){ 
+                //проверка шашки на битость
+                if(table.rows[focusEl.row +(deltRow*2 )].cells[focusEl.cell+ (deltCell*2)] !== undefined && 
+                    !table.rows[focusEl.row +(deltRow*2 )].classList.contains("word")){
+                //проверка на границу поля и на пустату x2 клетки 
+                    if(!table.rows[focusEl.row +(deltRow*2) ].cells[focusEl.cell +(deltCell*2) ].childNodes.length)
+                        
+                    //проверка на не свою шашку за битой
+                        table.rows[focusEl.row +(deltRow*2 )].cells[focusEl.cell +(deltCell*2 )].classList.add("move_option");
+                }
+            }   
+        }else table.rows[focusEl.row+deltRow].cells[focusEl.cell+deltCell].classList.add("move_option");
 
     // бить назад
-    if(table.rows[focusEl.row -deltRow +damkaStep].cells[focusEl.cell +deltCell+damkaStep] !== undefined && 
-            table.rows[focusEl.row -deltRow +damkaStep].cells[focusEl.cell +deltCell +damkaStep].children[0] !== undefined){
-        if(!table.rows[focusEl.row -deltRow +damkaStep].cells[focusEl.cell +deltCell +damkaStep].children[0].classList.contains(`chip_color_${focusEl.color}`)){
-            if(table.rows[focusEl.row -(deltRow*2 +damkaStep)].cells[focusEl.cell +(deltCell*2 +damkaStep)] !== undefined &&
-                !table.rows[focusEl.row -(deltRow*2 +damkaStep)].classList.contains("word")){
-                table.rows[focusEl.row -(deltRow*2 +damkaStep)].cells[focusEl.cell+ (deltCell*2 +damkaStep)].classList.add("move_option");
+    if (!table.rows[focusEl.row+deltRow].classList.contains("word"))
+        if(table.rows[focusEl.row -deltRow ].cells[focusEl.cell +deltCell] !== undefined && 
+                table.rows[focusEl.row -deltRow ].cells[focusEl.cell +deltCell ].children[0] !== undefined){
+            if(!table.rows[focusEl.row -deltRow ].cells[focusEl.cell +deltCell ].children[0].classList.contains(`chip_color_${focusEl.color}`)){
+                if(table.rows[focusEl.row -(deltRow*2 )].cells[focusEl.cell +(deltCell*2 )] !== undefined &&
+                    !table.rows[focusEl.row -(deltRow*2 )].classList.contains("word")){
+                        if(!table.rows[focusEl.row -(deltRow*2) ].cells[focusEl.cell +(deltCell*2) ].childNodes.length)
+                            table.rows[focusEl.row -(deltRow*2 )].cells[focusEl.cell+ (deltCell*2 )].classList.add("move_option");
+                }
+            }   
+        }
+
+    if(focusEl.isDamka){
+        let orederTo_upR = true, orederTo_upL = true, orederTo_dnR = true, orederTo_dnL = true;
+        for(let i=1; i<8; i++){
+            if (focusEl.row + i<9){//!table.rows[focusEl.row+i] !== undefined && !table.rows[focusEl.row+i].classList.contains("word")
+                //(1;1)
+                if(table.rows[focusEl.row +i ].cells[focusEl.cell +i] && orederTo_upR){
+                    if(table.rows[focusEl.row +i ].cells[focusEl.cell +i].children[0] !== undefined){//край
+                        if(!table.rows[focusEl.row +i ].cells[focusEl.cell +i ].children[0].classList.contains(`chip_color_${focusEl.color}`)){ // проверка на пустую ячейку
+                            //проверка шашки на битость
+                            if(table.rows[focusEl.row +(i+1)].cells[focusEl.cell+ (i+1)] !== undefined && 
+                                !table.rows[focusEl.row +(i+1)].classList.contains("word")){
+                            //проверка на границу поля и на пустату x2 клетки 
+                                if(!table.rows[focusEl.row +(i+1)].cells[focusEl.cell +(i+1)].childNodes.length)
+                                    
+                                //проверка на не свою шашку за битой
+                                    table.rows[focusEl.row +(i+1 )].cells[focusEl.cell +(i+1)].classList.add("move_option");
+                            }
+                        }else     orederTo_upR=false
+                    }else table.rows[focusEl.row+i].cells[focusEl.cell+i].classList.add("move_option");
+                }
+                //(1;-1)
+                if (table.rows[focusEl.row +i ].cells[focusEl.cell -i] && orederTo_upL) {    
+                    if(table.rows[focusEl.row +i ].cells[focusEl.cell -i] && table.rows[focusEl.row +i ].cells[focusEl.cell -i ].children[0] !== undefined){// проверка на пустую ячейку
+                        if(!table.rows[focusEl.row +i ].cells[focusEl.cell -i ].children[0].classList.contains(`chip_color_${focusEl.color}`)){ 
+                            //проверка шашки на битость
+                            if(table.rows[focusEl.row +(i+1 )].cells[focusEl.cell -(i+1)] !== undefined && 
+                                !table.rows[focusEl.row +(i+1 )].classList.contains("word")){
+                            //проверка на границу поля и на пустату x2 клетки 
+                                if(!table.rows[focusEl.row +(i+1) ].cells[focusEl.cell -(i+1) ].childNodes.length)
+                                    
+                                //проверка на не свою шашку за битой
+                                    table.rows[focusEl.row +(i+1 )].cells[focusEl.cell -(i+1 )].classList.add("move_option");
+                            }
+                        }   else orederTo_upL=false;
+                    }else table.rows[focusEl.row+i].cells[focusEl.cell-i].classList.add("move_option");   
+                }            
             }
-        }   
+
+            //(-1;1)
+            if (focusEl.row-i>0 ){
+                if(table.rows[focusEl.row -i].cells[focusEl.cell +i ]  && orederTo_dnR){
+                    if(table.rows[focusEl.row -i].cells[focusEl.cell +i ].children[0] !== undefined){// проверка на пустую ячейку
+                        if(!table.rows[focusEl.row -i ].cells[focusEl.cell +i ].children[0].classList.contains(`chip_color_${focusEl.color}`)){ 
+                            //проверка шашки на битость
+                            if(table.rows[focusEl.row -(i+1 )].cells[focusEl.cell +(i+1)] !== undefined && 
+                                !table.rows[focusEl.row -(i+1 )].classList.contains("word")){
+                            //проверка на границу поля и на пустату x2 клетки 
+                                if(!table.rows[focusEl.row -(i+1) ].cells[focusEl.cell +(i+1) ].childNodes.length)
+                                    
+                                //проверка на не свою шашку за битой
+                                    table.rows[focusEl.row -(i+1 )].cells[focusEl.cell +(i+1 )].classList.add("move_option");
+
+                            }
+                        }  else orederTo_dnR = false;
+                    }else table.rows[focusEl.row-i].cells[focusEl.cell+i].classList.add("move_option");
+                }
+            
+                //(-1;-1)
+                if(table.rows[focusEl.row -i ].cells[focusEl.cell -i ]  && orederTo_dnL){
+                    if(table.rows[focusEl.row -i ].cells[focusEl.cell -i ].children[0] !== undefined){// проверка на пустую ячейку
+                        if(!table.rows[focusEl.row -i ].cells[focusEl.cell -i ].children[0].classList.contains(`chip_color_${focusEl.color}`)){ 
+                            //проверка шашки на битость
+                            if(table.rows[focusEl.row -(i+1)].cells[focusEl.cell -(i+1)] !== undefined && 
+                                !table.rows[focusEl.row -(i+1 )].classList.contains("word")){
+                            //проверка на границу поля и на пустату x2 клетки 
+                                if(!table.rows[focusEl.row -(i+1) ].cells[focusEl.cell -(i+1) ].childNodes.length)
+                                    
+                                //проверка на не свою шашку за битой
+                                    table.rows[focusEl.row -(i+1 )].cells[focusEl.cell -(i+1 )].classList.add("move_option");
+                            }
+                        }else orederTo_dnL= false;   
+                    }else table.rows[focusEl.row-i].cells[focusEl.cell-i].classList.add("move_option");
+                }
+            }
+        }
     }
 }
 
 function addOptionMove(color){
     
-    // if(color == 'red'){
-    //     if(focusEl.isDamka){
-    //         for(let i = 1; (i <= 8 - focusEl.row) || (i <= 8 - focusEl.cell); i++){
-    //             console.log(i);
-    //             addClassOfOptionMove(-1,1,i)
-    //             addClassOfOptionMove(-1,-1,i)
-    //         }
-    //     }
-
-        if(!table.rows[focusEl.row+1].classList.contains("word")){
-            if(focusEl.cell != 7){
-                addClassOfOptionMove(1,1,0);
-            } 
-            if(focusEl.cell != 0) addClassOfOptionMove(1,-1,0);
-            
-        }
+    if(color == 'red'){
+        // if(!table.rows[focusEl.row+1].classList.contains("word")){
+            if(focusEl.cell != 7) addClassOfOptionMove(1,1);
+            if(focusEl.cell != 0) addClassOfOptionMove(1,-1);
+            // }
     }
 
     if(color=="white"){
-        if(!table.rows[focusEl.row-1].classList.contains("word")){
+        // if(!table.rows[focusEl.row-1].classList.contains("word")){
             if(focusEl.cell != 7) addClassOfOptionMove(-1,1)
             if(focusEl.cell != 0) addClassOfOptionMove(-1,-1)
-        }
+        // }
     }
     
     
