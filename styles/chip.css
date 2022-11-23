@@ -19,9 +19,7 @@
 }
 
 .chip_target{
-
     box-sizing: border-box;
-
     border: 3px dotted rgb(175, 173, 0);
 }
 
@@ -29,4 +27,9 @@
     background-image: url(../crown.png) ;
     background-repeat: no-repeat;
     background-size: contain;
+}
+
+.chip_must_beat{
+    box-sizing: border-box;
+    border: 3px double rgb(252, 132, 4);
 }

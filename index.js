@@ -2,12 +2,12 @@ function focusOfChip(chip){
 
     if(!chip.classList.contains('chip_target')) {
        
-        if (focusChip.chip !== 0){
+        if (focusChip.id !== 0){
             unFocusOfChip();
         }
 
         chip.classList.add('chip_target');
-        focusChip.chip = chip.id;
+        focusChip.id = chip.id;
         focusChip.row = chip.parentNode.parentNode.rowIndex;
         focusChip.cell = chip.parentNode.cellIndex;
         focusChip.color = chip.classList.contains("chip_color_red") ? "red" : "white";
@@ -30,8 +30,8 @@ function focusOfChip(chip){
 }
 
 function unFocusOfChip(){
-    if(focusChip.chip != 0){
-        document.querySelector("#" + focusChip.chip).classList.remove('chip_target');
+    if(focusChip.id != 0){
+        document.querySelector("#" + focusChip.id).classList.remove('chip_target');
         removeOptionMove("all");
     }
     
@@ -129,6 +129,7 @@ function addOptionMove(color){
     
     if(document.querySelectorAll('.move_option_beat').length){
         removeOptionMove('');
+        chipsIDMustBeat.push(focusChip.id);
     }
     
 }
@@ -182,47 +183,83 @@ function checkOfDamka(el){
         }
 }
 
+function checkingTheBetness(){
+
+    Array.from(document.querySelectorAll("."+stepOfColorChip)).map(item => {
+                
+       focusOfChip(item)
+        
+    })
+    unFocusOfChip()
+    if(chipsIDMustBeat.length){
+        chipsIDMustBeat.forEach(id => {
+            console.log(chipsIDMustBeat);
+            document.querySelector("#"+id).classList.add('chip_must_beat');
+        })
+    }
+}
+
+function checkClickOnBeatsChip(el){
+    if(document.querySelectorAll('.chip_must_beat').length != 0){
+        console.log("sd",el.target.classList.contains(".chip_must_beat"));
+        if(el.target.classList.contains("chip_must_beat") || el.target.classList.contains("move_option_beat")){
+            return true;
+        } return false;
+    }return true;
+        
+   
+}
+
 const table = document.querySelector(".checkers-field"); 
 let stepOfColorChip= "chip_color_white";
 let wasBeat = false;
-let focusChip={chip: 0,
+let chipsIDMustBeat = new Array();
+let focusChip={id: 0,
             orederTo_upR: true,
             orederTo_upL: true, 
             orederTo_dnR: true, 
             orederTo_dnL: true
             }
 
-start()
+start();
+// checkingTheBetness();
 
 table.addEventListener("click", (e) =>{
-    
-    if(e.target.classList.contains('move_option_beat')){
-        checkOfDamka(e.target);
-        e.target.append(table.rows[focusChip.row].cells[focusChip.cell].children[0]);
-
-        beatOfChip(e.target);
-
-        focusOfChip(e.target.children[0]);
-        if(!document.querySelectorAll(".move_option_beat").length){
-            unFocusOfChip()
-            stepOfColorChip = (stepOfColorChip == "chip_color_white") ? "chip_color_red" : "chip_color_white"
-        } 
-
-    }else {
-
-        if(e.target.classList.contains('chip')) {
-            if(e.target.classList.contains(stepOfColorChip))
-                focusOfChip(e.target)
-        }
-
-        if(e.target.classList.contains('move_option')){
-            
+    console.log(checkClickOnBeatsChip(e));
+    if(checkClickOnBeatsChip(e)){
+        if(e.target.classList.contains('move_option_beat')){
             checkOfDamka(e.target);
-            
             e.target.append(table.rows[focusChip.row].cells[focusChip.cell].children[0]);
+
+            beatOfChip(e.target);
+            focusOfChip(e.target.children[0]);
+
+            // console.log("len",document.querySelectorAll(".move_option_beat").length);
+            if(document.querySelectorAll(".move_option_beat").length === 0){
+
+                Array.from(document.querySelectorAll('.chip_must_beat')).forEach(item => item.classList.remove('chip_must_beat'));
+                unFocusOfChip()
+                stepOfColorChip = (stepOfColorChip == "chip_color_white") ? "chip_color_red" : "chip_color_white";
+                chipsIDMustBeat = new Array();
+
+                checkingTheBetness();
+                
+            }
             
-            stepOfColorChip = (stepOfColorChip == "chip_color_white") ? "chip_color_red" : "chip_color_white"
-            unFocusOfChip();
+        }else{
+            if(e.target.classList.contains('chip')) {
+                if(e.target.classList.contains(stepOfColorChip))
+                    focusOfChip(e.target)
+            }
+
+            if(e.target.classList.contains('move_option')){
+                e.target.append(table.rows[focusChip.row].cells[focusChip.cell].children[0]);
+                stepOfColorChip = (stepOfColorChip == "chip_color_white") ? "chip_color_red" : "chip_color_white";
+                checkingTheBetness();
+                checkOfDamka(e.target);
+                unFocusOfChip();
+                
+            }
         }
     }
 })
