@@ -172,7 +172,6 @@ function start(){
 }
 
 function checkOfDamka(el){
-    console.log("damka", table.rows[focusChip.row].cells[focusChip.cell].children[0],el.parentNode.rowIndex );
     if(table.rows[focusChip.row].cells[focusChip.cell].children[0].classList.contains("chip_color_red") 
                 && el.parentNode.rowIndex == 8){
                     table.rows[focusChip.row].cells[focusChip.cell].children[0].classList.add('damka');
@@ -219,7 +218,7 @@ let focusChip={id: 0,
             orederTo_dnL: true
             }
 
-// start();
+start();
 
 table.addEventListener("click", (e) =>{
     if(checkClickOnBeatsChip(e)){
@@ -230,7 +229,6 @@ table.addEventListener("click", (e) =>{
             beatOfChip(e.target);
             focusOfChip(e.target.children[0]);
 
-            // console.log("len",document.querySelectorAll(".move_option_beat").length);
             if(document.querySelectorAll(".move_option_beat").length === 0){
 
                 Array.from(document.querySelectorAll('.chip_must_beat')).forEach(item => item.classList.remove('chip_must_beat'));
