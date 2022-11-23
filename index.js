@@ -172,7 +172,7 @@ function start(){
 }
 
 function checkOfDamka(el){
-
+    console.log("damka", table.rows[focusChip.row].cells[focusChip.cell].children[0],el.parentNode.rowIndex );
     if(table.rows[focusChip.row].cells[focusChip.cell].children[0].classList.contains("chip_color_red") 
                 && el.parentNode.rowIndex == 8){
                     table.rows[focusChip.row].cells[focusChip.cell].children[0].classList.add('damka');
@@ -193,7 +193,6 @@ function checkingTheBetness(){
     unFocusOfChip()
     if(chipsIDMustBeat.length){
         chipsIDMustBeat.forEach(id => {
-            console.log(chipsIDMustBeat);
             document.querySelector("#"+id).classList.add('chip_must_beat');
         })
     }
@@ -201,7 +200,6 @@ function checkingTheBetness(){
 
 function checkClickOnBeatsChip(el){
     if(document.querySelectorAll('.chip_must_beat').length != 0){
-        console.log("sd",el.target.classList.contains(".chip_must_beat"));
         if(el.target.classList.contains("chip_must_beat") || el.target.classList.contains("move_option_beat")){
             return true;
         } return false;
@@ -221,11 +219,9 @@ let focusChip={id: 0,
             orederTo_dnL: true
             }
 
-start();
-// checkingTheBetness();
+// start();
 
 table.addEventListener("click", (e) =>{
-    console.log(checkClickOnBeatsChip(e));
     if(checkClickOnBeatsChip(e)){
         if(e.target.classList.contains('move_option_beat')){
             checkOfDamka(e.target);
@@ -253,10 +249,12 @@ table.addEventListener("click", (e) =>{
             }
 
             if(e.target.classList.contains('move_option')){
+                checkOfDamka(e.target);
+                
                 e.target.append(table.rows[focusChip.row].cells[focusChip.cell].children[0]);
                 stepOfColorChip = (stepOfColorChip == "chip_color_white") ? "chip_color_red" : "chip_color_white";
+                
                 checkingTheBetness();
-                checkOfDamka(e.target);
                 unFocusOfChip();
                 
             }
